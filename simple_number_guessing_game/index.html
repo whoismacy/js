@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Guessing Game</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <section>
+      <button class="btn play btn--play">How to Play</button>
+      <div class="modal hidden">
+        <button class="exit-modal">&times;</button>
+        <h3 class="modal-heading">How to Play</h3>
+        <p class="modal-p">
+          Guess My Number is a simple game where the user has to guess a value
+          between 1 and 50, with a limit of 10 chances. ENJOY !!!
+        </p>
+      </div>
+      <div class="overlay hidden"></div>
+    </section>
+
+    <header>
+      <h1 class="heading">Guess My Number</h1>
+      <p class="sub-heading">(Between 1 and 50)</p>
+      <p class="sub-heading">(10 attempts)</p>
+      <div class="floating-q">
+        <p class="guess-value">?</p>
+      </div>
+    </header>
+
+    <main>
+      <div class="grid-container">
+        <div class="grid-container-1">
+          <input type="number" class="number" max="50" min="1" />
+          <button class="btn check btn--check">Check!</button>
+        </div>
+        <div class="grid-container-2">
+          <p class="text start-guess-p">Start Guessing...</p>
+          <p class="text score-p">Score: <span class="score">10</span></p>
+          <p class="text highscore-p">
+            HighScore: <span class="highscore">0</span>
+          </p>
+        </div>
+      </div>
+      <div class="button-container">
+        <button class="btn again btn--again">Play Again</button>
+      </div>
+    </main>
+    <script src="script.js"></script>
+  </body>
+</html>
