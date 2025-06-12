@@ -2,6 +2,7 @@
 
 const modal = document.querySelector(".modal");
 const overlay = document.querySelector(".overlay");
+const select = document.querySelector("#select");
 
 const btnPlay = document.querySelector(".btn--play");
 const btnCheck = document.querySelector(".btn--check");
@@ -17,9 +18,15 @@ const textNumber = document.querySelector(".number");
 let guess = Math.floor(Math.random() * 50 + 1);
 let currentScore = 10;
 let highScore;
+let level;
 textNumber.value = "";
-console.log(guess);
 
+function adjustToDifficulty() {
+  if (level === "easy") {
+    currentScore = 25;
+    high;
+  }
+}
 // function to handle user win
 function win() {
   textStart.textContent = "YOU WIN !!!";
@@ -38,6 +45,7 @@ function win() {
   document.querySelector(".check").style.color = "#437d32";
   textGuess.style.color = "#60b347";
   textNumber.value = "";
+  return;
 }
 
 // function to handle user loss
@@ -59,6 +67,7 @@ function loss() {
   textGuess.style.color = "#f3d0d2";
   textNumber.style.borderColor = "#f3d0d2";
   textNumber.value = "";
+  return;
 }
 
 function playAgain() {
@@ -82,6 +91,12 @@ function playAgain() {
   document.querySelector(".check").style.backgroundColor = "#e5efcd";
   textGuess.style.color = "#54652c";
   textNumber.style.borderColor = "#f6faee";
+}
+
+function firstUpperCase(string) {
+  const fVal = string[0];
+  const rest = string.slice(1);
+  return fVal.toUpperCase() + rest;
 }
 
 // Handling the Opening and Closing of the Modal
@@ -138,11 +153,11 @@ btnCheck.addEventListener("click", function () {
   if (currentScore > 1) {
     if (value > 0) {
       if (value > guess) {
-        textStart.textContent = "HIGHER THAN THE GUESS VALUE";
+        textStart.textContent = "HIGHER THAN GUESS VALUE";
         currentScore -= 1;
         textScore.textContent = currentScore;
       } else if (value < guess) {
-        textStart.textContent = "LOWER THAN THE GUESS VALUE";
+        textStart.textContent = "LOWER THAN GUESS VALUE";
         currentScore -= 1;
         textScore.textContent = currentScore;
       } else if (value === guess) {
@@ -155,4 +170,14 @@ btnCheck.addEventListener("click", function () {
 });
 
 btnPlayAgain.addEventListener("click", playAgain);
-// add an option to choose the difficulty.
+
+select.addEventListener("change", function (event) {
+  level = event.target.value;
+  console.log(event.target.value);
+  setTimeout(function () {
+    select.classList.add("hidden");
+    document.querySelector(
+      ".sub-heading-alt"
+    ).textContent = `Difficulty: ${firstUpperCase(level)}`;
+  }, 400);
+});

@@ -22,8 +22,16 @@
 
     <header>
       <h1 class="heading">Guess My Number</h1>
-      <p class="sub-heading">(Between 1 and 50)</p>
-      <p class="sub-heading">(10 attempts)</p>
+      <p class="sub-heading">Select Your Difficulty (default medium)</p>
+      <select id="select" class="options">
+        <option value="default">Select Option</option>
+        <option value="easy">Easy</option>
+        <option value="medium">Medium</option>
+        <option value="difficult">Difficult</option>
+      </select>
+      <p class="sub-heading sub-heading-alt"></p>
+      <!-- <p class="sub-heading">(Between 1 and 50)</p>
+      <p class="sub-heading">(10 attempts)</p> -->
       <div class="floating-q">
         <p class="guess-value">?</p>
       </div>

@@ -32,13 +32,13 @@ header {
 }
 
 .sub-heading {
-  font-size: 2.4rem;
-  margin-bottom: 9.6rem;
+  font-size: 2.1rem;
+  margin-bottom: 2.4rem;
   margin-top: 2.4rem;
 }
 
-.sub-heading:nth-of-type(odd) {
-  margin-bottom: 0;
+.sub-heading-alt {
+  font-size: 1.7rem;
 }
 
 .floating-q {
@@ -184,4 +184,12 @@ header {
 
 .play {
   margin: 1.2rem 0 0 1.2rem;
+}
+
+.options {
+  font: inherit;
+  padding: 1.6rem 1.8rem;
+  font-size: 1.8rem;
+  background-color: #e5efcd;
+  text-align: center;
 }
