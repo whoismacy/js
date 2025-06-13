@@ -22,12 +22,12 @@
 
     <header>
       <h1 class="heading">Guess My Number</h1>
-      <p class="sub-heading">Select Your Difficulty (default medium)</p>
+      <p class="sub-heading">Select Your Difficulty (default: easy)</p>
       <select id="select" class="options">
-        <option value="default">Select Option</option>
+        <option value="">Select Option</option>
         <option value="easy">Easy</option>
         <option value="medium">Medium</option>
-        <option value="difficult">Difficult</option>
+        <option value="hard">Hard</option>
       </select>
       <p class="sub-heading sub-heading-alt"></p>
       <!-- <p class="sub-heading">(Between 1 and 50)</p>
@@ -45,9 +45,10 @@
         </div>
         <div class="grid-container-2">
           <p class="text start-guess-p">Start Guessing...</p>
-          <p class="text score-p">Score: <span class="score">10</span></p>
+          <p class="text score-p">Score: <span class="score">?</span></p>
           <p class="text highscore-p">
-            HighScore: <span class="highscore">0</span>
+            HighScore <span class="level"></span>:
+            <span class="highscore">0</span>
           </p>
         </div>
       </div>

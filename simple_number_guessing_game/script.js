@@ -14,25 +14,98 @@ const textScore = document.querySelector(".score");
 const textHScore = document.querySelector(".highscore");
 const textGuess = document.querySelector(".guess-value");
 const textNumber = document.querySelector(".number");
+const textLevel = document.querySelector(".level");
 
-let guess = Math.floor(Math.random() * 50 + 1);
-let currentScore = 10;
-let highScore;
-let level;
+const subHeadingAlt = document.querySelector(".sub-heading-alt");
+
+const model = {
+  level: "easy",
+  currentRange: 50,
+
+  setRange() {
+    if (this.level === "easy") {
+      this.currentRange = 50;
+      this[this.level].score = 10;
+    } else if (this.level === "medium") {
+      this.currentRange = 75;
+      this[this.level].score = 15;
+    } else if (this.level === "hard") {
+      this.currentRange = 100;
+      this[this.level].score = 20;
+    } else {
+      this.currentRange = 50;
+      this.easy.score = 10;
+    }
+
+    return this.currentRange;
+  },
+  easy: {
+    score: 0,
+    highScore: 0,
+  },
+  medium: {
+    score: 0,
+    highScore: 0,
+  },
+  hard: {
+    score: 0,
+    highScore: 0,
+  },
+};
+
+let guess = Math.floor(Math.random() * model.setRange() + 1);
 textNumber.value = "";
 
-function adjustToDifficulty() {
-  if (level === "easy") {
-    currentScore = 25;
-    high;
+select.addEventListener("change", function (event) {
+  model.level = event.target.value ? event.target.value : "easy";
+  model.setRange();
+
+  setTimeout(function () {
+    select.classList.add("hidden");
+    subHeadingAlt.textContent = `Difficulty: ${firstUpperCase(model.level)}`;
+    textLevel.textContent = firstUpperCase(model.level);
+  }, 400);
+});
+
+// Check Button
+btnCheck.addEventListener("click", function () {
+  if (textNumber.value === "") {
+    textStart.textContent = "VALUE CANNOT BE EMPTY";
+    return;
   }
-}
+
+  const value = Number(textNumber.value);
+
+  model.setRange();
+
+  if (model[model.level].score > 1) {
+    if (value > 0) {
+      if (value > guess) {
+        textStart.textContent = "HIGHER THAN GUESS VALUE";
+        model[model.level].score -= 1;
+        textScore.textContent = model.level.score;
+      } else if (value < guess) {
+        textStart.textContent = "LOWER THAN GUESS VALUE";
+        model[model.level].score -= 1;
+        textScore.textContent = model[model.level].score;
+      } else if (value === guess) {
+        win();
+        model[model.level].currentScore > model[model.level].highScore
+          ? (model[model.level].highScore = model[model.level].currentScore)
+          : (model[model.level].highScore = model[model.level].highScore);
+      }
+    }
+  } else {
+    loss();
+  }
+});
+
 // function to handle user win
 function win() {
   textStart.textContent = "YOU WIN !!!";
   textGuess.textContent = guess;
-  textScore.textContent = currentScore;
-  textHScore.textContent = currentScore;
+  textScore.textContent = model.level.score;
+  textHScore.textContent = model.level.score;
 
   document.querySelector("body").style.backgroundColor = "#60b347";
   document.querySelector("header").style.borderColor = "#bfe1b5";
@@ -72,11 +145,10 @@ function loss() {
 
 function playAgain() {
   textStart.textContent = "Start Guessing...";
-  textScore.textContent = 10;
+  textScore.textContent = model[model.level].score;
   textGuess.textContent = "?";
   textNumber.textContent = "";
-  guess = Math.floor(Math.random() * 50 + 1);
-  currentScore = 10;
+  guess = Math.floor(Math.random() * model.range + 1);
   textNumber.value = "";
 
   document.querySelector("body").style.backgroundColor = "#283618";
@@ -136,48 +208,16 @@ overlay.addEventListener("click", function () {
   }
 });
 
+// Ensuring Player does not exceed the Required Word Bound
 textNumber.addEventListener("input", function () {
   if (textNumber.value > 50 || textNumber.value < 0) {
     textNumber.value = "";
   }
 });
 
-btnCheck.addEventListener("click", function () {
-  if (textNumber.value === "") {
-    textStart.textContent = "VALUE CANNOT BE EMPTY";
-    return;
-  }
-
-  const value = Number(textNumber.value);
-
-  if (currentScore > 1) {
-    if (value > 0) {
-      if (value > guess) {
-        textStart.textContent = "HIGHER THAN GUESS VALUE";
-        currentScore -= 1;
-        textScore.textContent = currentScore;
-      } else if (value < guess) {
-        textStart.textContent = "LOWER THAN GUESS VALUE";
-        currentScore -= 1;
-        textScore.textContent = currentScore;
-      } else if (value === guess) {
-        win();
-      }
-    }
-  } else {
-    loss();
-  }
-});
-
 btnPlayAgain.addEventListener("click", playAgain);
 
-select.addEventListener("change", function (event) {
-  level = event.target.value;
-  console.log(event.target.value);
-  setTimeout(function () {
-    select.classList.add("hidden");
-    document.querySelector(
-      ".sub-heading-alt"
-    ).textContent = `Difficulty: ${firstUpperCase(level)}`;
-  }, 400);
-});
+// we require a function with a side effect that sets the Score and
+// we should also keep track of the HighScore is it easy or medium
+// also the range at which we generate the random values depending on the level
+// persistent storage in the browser
