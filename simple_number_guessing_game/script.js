@@ -57,7 +57,6 @@ const model = {
 model.setRange();
 let guess = Math.floor(Math.random() * model.currentRange + 1);
 textNumber.value = "";
-console.log(guess);
 
 select.addEventListener("change", function (event) {
   model.level = event.target.value ? event.target.value : "easy";
@@ -125,7 +124,6 @@ function win() {
   document.querySelector(".check").style.color = "#437d32";
   textGuess.style.color = "#60b347";
   textNumber.value = "";
-  return;
 }
 
 // function to handle user loss
@@ -148,7 +146,6 @@ function loss() {
   textGuess.style.color = "#f3d0d2";
   textNumber.style.borderColor = "#f3d0d2";
   textNumber.value = "";
-  return;
 }
 
 function playAgain() {
@@ -231,8 +228,3 @@ btnPlayAgain.addEventListener("click", playAgain);
 window.addEventListener("load", function () {
   select.value = "";
 });
-
-// we require a function with a side effect that sets the Score and
-// we should also keep track of the HighScore is it easy or medium
-// also the range at which we generate the random values depending on the level
-// persistent storage in the browser
