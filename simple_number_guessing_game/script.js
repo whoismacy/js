@@ -17,6 +17,7 @@ const textNumber = document.querySelector(".number");
 const textLevel = document.querySelector(".level");
 
 const subHeadingAlt = document.querySelector(".sub-heading-alt");
+let currentLevel;
 
 const model = {
   level: "easy",
@@ -53,12 +54,16 @@ const model = {
   },
 };
 
-let guess = Math.floor(Math.random() * model.setRange() + 1);
+model.setRange();
+let guess = Math.floor(Math.random() * model.currentRange + 1);
 textNumber.value = "";
+console.log(guess);
 
 select.addEventListener("change", function (event) {
   model.level = event.target.value ? event.target.value : "easy";
   model.setRange();
+  textScore.textContent = model[model.level].score;
+  textHScore.textContent = model[model.level].highScore;
 
   setTimeout(function () {
     select.classList.add("hidden");
@@ -75,25 +80,22 @@ btnCheck.addEventListener("click", function () {
   }
 
   const value = Number(textNumber.value);
+  textLevel.textContent = firstUpperCase(model.level);
 
-  model.setRange();
+  currentLevel = model.level;
 
-  if (model[model.level].score > 1) {
-    if (value > 0) {
-      if (value > guess) {
-        textStart.textContent = "HIGHER THAN GUESS VALUE";
-        model[model.level].score -= 1;
-        textScore.textContent = model.level.score;
-      } else if (value < guess) {
-        textStart.textContent = "LOWER THAN GUESS VALUE";
-        model[model.level].score -= 1;
-        textScore.textContent = model[model.level].score;
-      } else if (value === guess) {
-        win();
-        model[model.level].currentScore > model[model.level].highScore
-          ? (model[model.level].highScore = model[model.level].currentScore)
-          : (model[model.level].highScore = model[model.level].highScore);
-      }
+  if (model[currentLevel].score > 1) {
+    if (value > guess) {
+      textStart.textContent = "HIGHER THAN GUESS VALUE";
+      model[currentLevel].score -= 1;
+      textScore.textContent = model[currentLevel].score;
+    } else if (value < guess) {
+      textStart.textContent = "LOWER THAN GUESS VALUE";
+      model[currentLevel].score -= 1;
+      textScore.textContent = model[currentLevel].score;
+    } else if (value === guess) {
+      win();
+      console.log(model);
     }
   } else {
     loss();
@@ -102,10 +104,14 @@ btnCheck.addEventListener("click", function () {
 
 // function to handle user win
 function win() {
+  if (model[currentLevel].score > model[currentLevel].highScore) {
+    model[currentLevel].highScore = model[currentLevel].score;
+  }
+
   textStart.textContent = "YOU WIN !!!";
   textGuess.textContent = guess;
-  textScore.textContent = model.level.score;
-  textHScore.textContent = model.level.score;
+  // textScore.textContent = model[currentLevel].score;
+  textHScore.textContent = model[currentLevel].highScore;
 
   document.querySelector("body").style.backgroundColor = "#60b347";
   document.querySelector("header").style.borderColor = "#bfe1b5";
@@ -145,10 +151,11 @@ function loss() {
 
 function playAgain() {
   textStart.textContent = "Start Guessing...";
+  model.setRange();
   textScore.textContent = model[model.level].score;
   textGuess.textContent = "?";
   textNumber.textContent = "";
-  guess = Math.floor(Math.random() * model.range + 1);
+  guess = Math.floor(Math.random() * model.currentRange + 1);
   textNumber.value = "";
 
   document.querySelector("body").style.backgroundColor = "#283618";
@@ -210,12 +217,17 @@ overlay.addEventListener("click", function () {
 
 // Ensuring Player does not exceed the Required Word Bound
 textNumber.addEventListener("input", function () {
-  if (textNumber.value > 50 || textNumber.value < 0) {
+  if (textNumber.value > model.currentRange || textNumber.value < 0) {
     textNumber.value = "";
   }
 });
 
 btnPlayAgain.addEventListener("click", playAgain);
+
+// set default value for select once open
+window.addEventListener("load", function () {
+  select.value = "";
+});
 
 // we require a function with a side effect that sets the Score and
 // we should also keep track of the HighScore is it easy or medium
