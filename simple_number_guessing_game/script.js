@@ -108,12 +108,13 @@ function win() {
     model[currentLevel].highScore = model[currentLevel].score;
   }
 
+  btnCheck.disabled = true;
   textStart.textContent = "YOU WIN !!!";
   textGuess.textContent = guess;
   // textScore.textContent = model[currentLevel].score;
   textHScore.textContent = model[currentLevel].highScore;
 
-  document.querySelector("body").style.backgroundColor = "#60b347";
+  document.querySelector(".main").style.backgroundColor = "#60b347";
   document.querySelector("header").style.borderColor = "#bfe1b5";
   document.querySelector(".btn").style.backgroundColor = "#dff0da";
   document.querySelector(".btn").style.color = "#437d32";
@@ -129,12 +130,13 @@ function win() {
 
 // function to handle user loss
 function loss() {
+  btnCheck.disabled = true;
   textStart.textContent = "YOU LOSE !!!";
   textGuess.textContent = guess;
   textScore.textContent = 0;
 
-  document.querySelector("body").style.backgroundColor = "#c1121f";
-  document.querySelector("body").style.color = "#f3d0d2";
+  document.querySelector(".main").style.backgroundColor = "#c1121f";
+  document.querySelector(".main").style.color = "#f3d0d2";
   document.querySelector("header").style.borderColor = "#f3d0d2";
   document.querySelector(".btn").style.color = "#c1121f";
   document.querySelector(".btn").style.backgroundColor = "#f3d0d2";
@@ -150,6 +152,7 @@ function loss() {
 }
 
 function playAgain() {
+  btnCheck.disabled = false;
   textStart.textContent = "Start Guessing...";
   model.setRange();
   textScore.textContent = model[model.level].score;
@@ -158,9 +161,9 @@ function playAgain() {
   guess = Math.floor(Math.random() * model.currentRange + 1);
   textNumber.value = "";
 
-  document.querySelector("body").style.backgroundColor = "#283618";
+  document.querySelector(".main").style.backgroundColor = "#283618";
   document.querySelector("header").style.borderColor = "#949b8c";
-  document.querySelector("body").style.color = "#f6faee";
+  document.querySelector(".main").style.color = "#f6faee";
   document.querySelector(".btn").style.color = "#54652c";
   document.querySelector(".btn").style.backgroundColor = "#e5efcd";
   document.querySelector(".floating-q").style.backgroundColor = "#e5efcd";
