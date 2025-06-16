@@ -34,18 +34,50 @@ document.addEventListener("keydown", function (e) {
 const button = document.querySelector(".btn--scroll-to");
 const section1 = document.querySelector("#section--1");
 
-function scrollView(param1, param2) {
-  this.scrollIntoView({ behavior: "smooth" });
-  console.log(param1, param2);
-}
+// we use bind, to add event listeners to addEventListener()
 
 button.addEventListener("click", function () {
-  // const coords = section1.getBoundingClientRect();
-  // console.log(window.pageXOffset, window.pageYOffset);
-  // console.log(coords);
-  // window.scrollTo({
-  //   left: window.pageXOffset + coords.left,
-  //   top: window.pageYOffset + coords.top,
-  // });
   section1.scrollIntoView({ behavior: "smooth" });
 });
+
+// first, add event listener to common parent element
+// then, determine which element originated the event
+document.querySelector(".nav__links").addEventListener("click", function (e) {
+  if (
+    e.target.classList.contains("nav__link") &&
+    !e.target.classList.contains("nav__link--btn")
+  ) {
+    e.preventDefault();
+    const id = e.target.getAttribute("href");
+    document.querySelector(id).scrollIntoView({ behavior: "smooth" });
+  }
+});
+
+//implementing sticky navigation using, Intersection Observer API'
+
+// threshold 0, triggers when any part of the element enters the viewport / moves completely out of view.
+// rootMargin -90px, means start observing 90px before the header actually intersects with the viewport.
+// rootMargin 90px, would mean start observing 90px after the header actually intersects with the viewport.
+
+const header = document.querySelector(".header");
+const nav = document.querySelector(".nav");
+const navHeight = nav.getBoundingClientRect().height;
+
+const obsOptions = {
+  root: null,
+  threshold: [0],
+  rootMargin: `-${navHeight}px`,
+};
+
+const obsCallback = function (entry) {
+  const [ent] = entry;
+
+  if (!ent.isIntersecting) {
+    nav.classList.add("sticky");
+  } else {
+    nav.classList.remove("sticky");
+  }
+};
+
+const observer = new IntersectionObserver(obsCallback, obsOptions);
+observer.observe(header);
