@@ -34,8 +34,7 @@ document.addEventListener("keydown", function (e) {
 const button = document.querySelector(".btn--scroll-to");
 const section1 = document.querySelector("#section--1");
 
-// we use bind, to add event listeners to addEventListener()
-
+// we use bind, to add parameters to addEventListener()
 button.addEventListener("click", function () {
   section1.scrollIntoView({ behavior: "smooth" });
 });
@@ -55,9 +54,10 @@ document.querySelector(".nav__links").addEventListener("click", function (e) {
 
 //implementing sticky navigation using, Intersection Observer API'
 
+// when we specify root as null, it means the viewport is the root element.
 // threshold 0, triggers when any part of the element enters the viewport / moves completely out of view.
-// rootMargin -90px, means start observing 90px before the header actually intersects with the viewport.
-// rootMargin 90px, would mean start observing 90px after the header actually intersects with the viewport.
+// rootMargin -90px, means start observing 90px before the header actually leaves the viewport.
+// rootMargin 90px, would mean start observing 90px after the header actually leaves the viewport.
 
 const header = document.querySelector(".header");
 const nav = document.querySelector(".nav");
@@ -81,3 +81,53 @@ const obsCallback = function (entry) {
 
 const observer = new IntersectionObserver(obsCallback, obsOptions);
 observer.observe(header);
+
+// lazy loading images and revealing elements on scroll
+
+// lazy load
+// we lazy load using intersection observer api
+const imgs = document.querySelectorAll("img[data-src]");
+
+function loadImg(entries, observer) {
+
+  const [entry] = entries;
+  entry.target.src = entry.target.dataset.src;
+
+  entry.target.addEventListener("load", function () {
+    entry.target.classList.remove("lazy-img");
+  })
+  observer.unobserve(entry.target);
+}
+
+const lazyImgObserver = new IntersectionObserver(loadImg, {
+  root: null,
+  threshold: 0,
+});
+
+imgs.forEach((img) => lazyImgObserver.observe(img));
+
+// revealing elements on scroll
+const sections = document.querySelectorAll(".section");
+
+function sectionDisplay(entries, observer) {
+
+  entries.forEach(function (entry) {
+
+    if (!entry.isIntersecting) return;
+    
+    entry.target.classList.remove("section--hidden");
+    observer.unobserve(entry.target);
+  });
+}
+
+const sectionsObserver = new IntersectionObserver(sectionDisplay, {
+  root: null,
+  threshold: 0.15,
+})
+
+sections.forEach(function (sect) {
+  sect.classList.add("section--hidden");
+  sectionsObserver.observe(sect);
+})
+
+// Building a slider component
